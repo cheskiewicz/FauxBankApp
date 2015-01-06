@@ -35,30 +35,37 @@
  <div data-role="page" id="loginPage">
      
 <div style="margin-top: 100px; text-align:center; font-size: 30px;">
-     <label>MegaBank</label>
+    
+     <label id="mainTitle">myBank</label>
      </div>
+    <script>
+  //      localStorage.setItem("comingFromMovenLogin","no");
+        </script>
+<div style="margin-top: 30px; text-align:center; font-size: 16px; color:red;">
+    <label id="incorrectUsernamePassword"></label>
+    </div>
      <div class="login-overlay" >
          <form id="loginForm" onsubmit="return false;">
 
              <div class="input-group" style="margin-top: 50px">
       <div class="input-row" style="padding-left:12px; padding-right:12px">
-                     <input name="username" type="text" placeholder="Username" autocapitalize="off" autocorrect="off" autocomplete="off">
+          
+                     <input id="username" type="text" placeholder="Username" autocapitalize="off" autocorrect="off" autocomplete="off">
                          </div>
                  <div class="input-row" style="padding-left:12px; padding-right:12px">
-                     <input name="password" type="password" placeholder="Password" autocapitalize="off" autocorrect="off" autocomplete="off">
+                     <input id="password" type="password" placeholder="Password" autocapitalize="off" autocorrect="off" autocomplete="off">
                          </div>
              </div>
              <div class="action-group" style="padding-left:12px; padding-right:12px">
-                 <a href="#mainPage" class="ui-btn-plain" data-role="button" data-rel="page" data-transition="slide">Log In</a>
-<!--     <a href="getAccessToken ()" class="ui-btn-plain" data-role="button">Log In</a> -->
+                 <button type="button" onclick="getAccessCodeFromServerAndLogin()">Log In</button>
                  <p class="forgotPasswordContact">
                  <p id="troubleTextID" style="padding-left:12px; line-height:20px;"></p>
                  <a href="#resetPassword" style="padding-left:12px; line-height:24px;" class="forgot-password" data-rel="page" >Reset your password</a> or <a href="#contactSupport" class="forgot-username">Contact support</a><br>
-                 <label>test line</label>
-                 <button type="button" onclick="loadXMLDoc()">Access Server</button>
+ <!--                <label>test line</label>
+                 <button type="button" onclick="getAccessCodeFromServerAndLogin()">Access Server</button>
                  </br>
-                 <label >Access Code from other app:</label>
-                 <label id="dataPassedIn"></label>
+                 <label >Access Code from other app:</label>-->
+       <!--          <label id="dataPassedIn" style="font-size: 6px;"></label> -->
                  </p>
              </div>
          </form>
@@ -114,12 +121,10 @@
 <div data-role="page" id="mainPage">
  
 	<div data-role="header" data-position="fixed"> 
-		<h1>Mega Bank</h1>
+		<h1>myBank</h1>
 	</div><!-- /header --> 
  
 	<div data-role="content"> 
-		<p>Welcome to the Mega Bank.  We are happy to have you onboard!</a>
-        </p>
  
 			
 		<ul data-role="listview" data-inset="true"> 
@@ -130,6 +135,7 @@
             <li><a href="#branches">Branches</a></li>
             <li><a href="#depositChecks">Deposit Checks</a></li>
             <li><a href="javascript:myFunc()">Financial Wellness</a></li>
+            <li><a href="javascript:reset()">Logout</a></li>
 		</ul> 
 					
 		<br />
@@ -381,7 +387,7 @@
 	</div>
 	
 </div>
-
+ -->
 <div data-role="page" id="postDialogExample"> 
  
 	<div data-role="content"> 
@@ -392,7 +398,7 @@
 	</div>
 	
 </div>
- --> 
+ 
 <div data-role="page" id="depositChecks">
  
 	<div data-role="header" data-position="fixed">
@@ -436,6 +442,31 @@
 	</div><!-- /footer -->
 		
 </div>
+
+<div data-role="dialog" data-rel="dialog" data-transition="slideup" id="incorrectCredentials">
+    
+    <div data-role="header" data-position="fixed">
+        <h1>Bill Pay</h1>
+        <a href="#" data-rel="back">Back</a>
+    </div><!-- /header -->
+    <!--
+     <div data-role="content">
+     
+     Icons by Joseph Wain / <a href="http://www.glyphish.com" target="_blank">glyphish.com</a>. Licensed under the <a href="http://creativecommons.org/licenses/by/3.0/us/" target="_blank">Creative Commons Attribution 3.0 United States License</a>.
+     
+     </div>
+     
+     <div data-role="footer" data-position="fixed">
+     <div data-role="navbar">
+     <ul>
+     <li><a href="#" id="tabA" data-icon="custom">One</a></li>
+     <li><a href="#" id="tabB" data-icon="custom" class="ui-btn-active">Two</a></li>
+     <li><a href="#" id="tabC" data-icon="custom">Three</a></li>
+     </ul>
+     </div><!-- /navbar -->
+</div><!-- /footer -->
+
+</div>
  <!--
 <div data-role="page" id="popups" data-theme="b">
  
@@ -477,48 +508,110 @@
         var PLUGIN_NAME                         = "MyHybridBridge";
         var ACTION_SWITCH_APPS                 = "ACTION_SWITCH_APPS";
         
-        cordova.exec(null, null, PLUGIN_NAME, ACTION_SWITCH_APPS, []);
+        var accessToken = localStorage.getItem("access_token");
+        var refreshToken = localStorage.getItem("refresh_token");
+        var dataArray = [accessToken, refreshToken];
+        
+ //       alert("Inside Update Exec in Bank App token=" + accessToken);
+        
+        cordova.exec(null, null, PLUGIN_NAME, ACTION_SWITCH_APPS, dataArray);
     }
 
+function reset() {
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("incorrectUsernamePassword").innerHTML = "";
+    localStorage.setItem("comingFromMovenLogin","no");
+    document.getElementById("mainTitle").innerHTML = "myBank";
+    
+    window.open("#loginPage");
+    location.reload();
+    
+}
+
     function updateContent( data ) {
-        localStorage.setItem("username", data);
-        window.open("#loginPage");
+        var array = data.split("/");
+        var accessCodeFromMoven = array[0];
+        var comingFromMovenLogin = array[1];
+        localStorage.setItem("comingFromMovenLogin",comingFromMovenLogin);
+        if(comingFromMovenLogin == "yes"){
+            document.getElementById("mainTitle").innerHTML = "myBank <br> Financial Wellness";
+        }else{
+            document.getElementById("mainTitle").innerHTML = "myBank";
+        }
+        var savedAccessCode = localStorage.getItem("access_token");
+        if(savedAccessCode == accessCodeFromMoven){
+            window.open("#mainPage");
+        }else{
+            window.open("#loginPage");
+        }
         document.getElementById( "dataPassedIn" ).innerHTML = data;
     }
 
 </script>
 <script>
-    function loadXMLDoc()
-    {
-        var xmlhttp;
-        
-        xmlhttp=new XMLHttpRequest();
 
-        xmlhttp.onreadystatechange=function()
+
+function getAccessCodeFromServerAndLogin()
+{
+    var xmlhttp;
+    
+    xmlhttp=new XMLHttpRequest();
+    
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
         {
-        
-           alert(xmlhttp.responseText);
-            if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            {
-                alert("Successful server access");
-                alert(xmlhttp.responseText);
-                document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+            //      alert("Successful server access");
+            //       alert(xmlhttp.responseText);
+            var parsedJSON = JSON.parse(xmlhttp.responseText);
+            localStorage.setItem("access_token", parsedJSON.access_token);
+            localStorage.setItem("refresh_token", parsedJSON.refresh_token);
+            var savedAccessCode = localStorage.getItem("comingFromMovenLogin");
+      //      alert(savedAccessCode);
+            if(savedAccessCode == "yes"){
+         //       alert("Inside of yes");
+                myFunc();
+                
+            }else{
+                window.location = "#mainPage";
+            }
+            
+        }else{
+            //            alert(xmlhttp.status);
+            //            alert(xmlhttp.readyState);
+            if(xmlhttp.readyState == 4 && xmlhttp.status != 200){
+                document.getElementById( "incorrectUsernamePassword" ).innerHTML = "Incorrect Username or Password";
             }
         }
-        
-        
- //       var encodedIDs = $.base64.encode("client1.id:client1.secret");
- //       document.getElementById( "dataPassedIn" ).innerHTML = data;
-        xmlhttp.open("POST","https://oauth-temp.moven.com/token",true);
-  //      xmlhttp.setRequestHeader("Authorization",encodedIDs);
-  //      xmlhttp.setRequestHeader("Authorization","Basic Y2xpZW50MS5pZDpjbGllbnQxLnNlY3JldAo=");
-        xmlhttp.setRequestHeader("Authorization","Basic Y2xpZW50MS5pZDpjbGllbnQxLnNlY3JldA==");
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("grant_type=password&username=user1.username&password=user1.password");
-        
     }
-</script>
+    
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    var encodedData = window.btoa("client1.id:client1.secret");
+    var codes = "Basic "+ encodedData;
+    xmlhttp.open("POST","https://oauth-temp.moven.com/token",true);
+    xmlhttp.setRequestHeader("Authorization",codes);
+    //      xmlhttp.setRequestHeader("Authorization","Basic Y2xpZW50MS5pZDpjbGllbnQxLnNlY3JldA==");
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //      xmlhttp.send("grant_type=password&username=user1.username&password=user1.password");
+    xmlhttp.send("grant_type=password&username="+username+"&password="+password);
+    
+}
 
+</script>
+<script>
+    var savedAccessCode = localStorage.getItem("comingFromMovenLogin");
+//    alert(savedAccessCode);
+    if(savedAccessCode == "yes"){
+        document.getElementById("mainTitle").innerHTML = "myBank FWM";
+    }else{
+        document.getElementById("mainTitle").innerHTML = "myBank";
+    }
+
+    </script>
 
 </body>
-</html> 
+</html>
