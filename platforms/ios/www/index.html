@@ -38,6 +38,11 @@
     
      <label id="mainTitle">myBank</label>
      </div>
+<div align="middle">
+ <img id="pic" align="middle" style="margin-top:20px;width:90px;height:90px;"><br><br>
+    </div>
+
+        
     <script>
   //      localStorage.setItem("comingFromMovenLogin","no");
         </script>
@@ -128,13 +133,14 @@
  
 			
 		<ul data-role="listview" data-inset="true"> 
-            <li><a href="#viewAccounts">View Accounts</a></li>
-            <li><a href="#transfers">Transfers</a></li>
-            <li><a href="#billPay">Bill Pay</a></li>
-            <li><a href="#accountServices">Account Services</a></li>
-            <li><a href="#branches">Branches</a></li>
-            <li><a href="#depositChecks">Deposit Checks</a></li>
+            <li><a href="#viewAccounts">Accounts</a></li>
+            <li><a href="#transfers">Payments and Transfers</a></li>
+     <!--       <li><a href="#billPay">Bill Pay</a></li> -->
+            <li><a href="#accountServices">Customer</a></li>
+      <!--      <li><a href="#branches">Branches</a></li>
+            <li><a href="#depositChecks">Deposit Checks</a></li> -->
             <li><a href="javascript:myFunc()">Financial Wellness</a></li>
+            <li><a href="#accountServices">Support</a></li>
             <li><a href="javascript:reset()">Logout</a></li>
 		</ul> 
 					
@@ -536,8 +542,10 @@ function reset() {
         localStorage.setItem("comingFromMovenLogin",comingFromMovenLogin);
         if(comingFromMovenLogin == "yes"){
             document.getElementById("mainTitle").innerHTML = "myBank <br> Financial Wellness";
+        document.getElementById("pic").src="img/BankWellnessIcon.png";
         }else{
             document.getElementById("mainTitle").innerHTML = "myBank";
+            document.getElementById("pic").src="img/Bank_icon2.png";
         }
         var savedAccessCode = localStorage.getItem("access_token");
         if(savedAccessCode == accessCodeFromMoven){
@@ -607,8 +615,10 @@ function getAccessCodeFromServerAndLogin()
 //    alert(savedAccessCode);
     if(savedAccessCode == "yes"){
         document.getElementById("mainTitle").innerHTML = "myBank FWM";
+        document.getElementById("pic").src="img/BankWellnessIcon.png";
     }else{
         document.getElementById("mainTitle").innerHTML = "myBank";
+        document.getElementById("pic").src="img/Bank_icon2.png";
     }
 
     </script>
