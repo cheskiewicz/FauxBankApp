@@ -13,8 +13,13 @@
 -(void)ACTION_SWITCH_APPS:(CDVInvokedUrlCommand*)command{
     // Opens the Receiver app if installed, otherwise displays an error
     UIApplication *ourApplication = [UIApplication sharedApplication];
-    NSString *URLEncodedText = [@"SomeText" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *ourPath = [@"goToMoven://" stringByAppendingString:URLEncodedText];
+    NSArray *dataArray = command.arguments;
+    NSString *dataString = [dataArray objectAtIndex:0];
+//    NSString *refreshCode = [dataArray objectAtIndex:1];
+//    NSString *dataString = [accessCode stringByAppendingString:@"/"];
+//    dataString = [dataString stringByAppendingString:refreshCode];
+    NSString *URLEncodedText = [dataString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *ourPath = [@"goToMovenActual://" stringByAppendingString:URLEncodedText];
     NSURL *ourURL = [NSURL URLWithString:ourPath];
     if ([ourApplication canOpenURL:ourURL]) {
         [ourApplication openURL:ourURL];
