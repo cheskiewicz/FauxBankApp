@@ -144,6 +144,11 @@
 
 - (void)evalJs:(NSString*)js scheduledOnRunLoop:(BOOL)scheduledOnRunLoop
 {
+    NSString *saved = js;
+    
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside evalJs ///////////////////////////" message:saved delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+ //   [alert show];
+    
     js = [NSString stringWithFormat:@"cordova.require('cordova/exec').nativeEvalAndFetch(function(){%@})", js];
     if (scheduledOnRunLoop) {
         [self evalJsHelper:js];

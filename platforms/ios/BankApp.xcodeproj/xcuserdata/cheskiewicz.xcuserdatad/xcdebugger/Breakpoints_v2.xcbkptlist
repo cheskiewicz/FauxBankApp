@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CordovaLib/Classes/CDVViewController.m"
-            timestampString = "440692880.2396"
+            timestampString = "442443646.121451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1025"
-            endingLineNumber = "1025"
+            startingLineNumber = "1057"
+            endingLineNumber = "1057"
             landmarkName = "-processOpenUrl:pageLoaded:"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CordovaLib/Classes/CDVViewController.m"
-            timestampString = "440636738.74368"
+            timestampString = "442443646.121451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1018"
-            endingLineNumber = "1018"
+            startingLineNumber = "1050"
+            endingLineNumber = "1050"
             landmarkName = "-processOpenUrl:pageLoaded:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CordovaLib/Classes/CDVViewController.m"
-            timestampString = "440692880.2396"
+            timestampString = "442443646.121451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1022"
-            endingLineNumber = "1022"
+            startingLineNumber = "1054"
+            endingLineNumber = "1054"
             landmarkName = "-processOpenUrl:pageLoaded:"
             landmarkType = "5">
          </BreakpointContent>

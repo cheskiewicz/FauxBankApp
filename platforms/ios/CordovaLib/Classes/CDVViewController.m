@@ -46,6 +46,7 @@
 @property (readwrite, assign) BOOL initialized;
 
 @property (atomic, strong) NSURL* openURL;
+@property (atomic, strong) NSURL* savedURL;
 
 @end
 
@@ -114,6 +115,31 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside viewWillAppear WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW" message:self.savedURL.absoluteString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+ //   [alert show];
+//    [_commandDelegate evalJs:(@"reload()")];
+   /*  
+    if (self.savedURL != nil) {
+    
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside viewWillAppear openURL PppPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" message:self.savedURL.absoluteString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        
+    NSString *string = self.savedURL.absoluteString;
+    NSArray *components = [string componentsSeparatedByString:@"//"];
+    string = [components objectAtIndex:1];
+    NSString *quotation = @"\"";
+    NSString *script = @"updateContent(";
+    script = [script stringByAppendingString:quotation];
+    script = [script stringByAppendingString:string];
+    NSString *end = @");";
+    script = [script stringByAppendingString:quotation];
+    script = [script stringByAppendingString:end];
+ //   CDVCommandDelegateImpl *delegate = [[CDVCommandDelegateImpl alloc] initWithViewController:self];
+    [_commandDelegate evalJs:(script)];
+
+    }
+     */
     [super viewWillAppear:animated];
 }
 
@@ -1011,6 +1037,12 @@
 - (void)processOpenUrl:(NSURL*)url pageLoaded:(BOOL)pageLoaded
 {
     
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside processOpenUrl XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" message:url.absoluteString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alert show];
+    
+//    self.savedURL = url;
+ //   [NSRunLoop.currentRunLoop runUntilDate: ([[NSDate alloc] initWithTimeIntervalSinceNow: (5.0)])];
+/*
     NSString *string = url.absoluteString;
     NSArray *components = [string componentsSeparatedByString:@"//"];
     string = [components objectAtIndex:1];
@@ -1022,7 +1054,11 @@
     script = [script stringByAppendingString:quotation];
     script = [script stringByAppendingString:end];
     CDVCommandDelegateImpl *delegate = [[CDVCommandDelegateImpl alloc] initWithViewController:self];
-    [delegate evalJs:(script)];
+//    [_commandDelegate evalJs:(script)];
+    [self.webView stringByEvaluatingJavaScriptFromString:script];
+  */  
+ //   UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:@"inside processOpenUrl after 777777777777777777777777" message:script delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+ //   [alert2 show];
     
     if (!pageLoaded) {
         // query the webview for readystate
@@ -1040,11 +1076,57 @@
     }
 }
 
-- (void)processOpenUrl:(NSURL*)url
-{
-    [self processOpenUrl:url pageLoaded:NO];
+- (void)processOpenUrl:(NSURL*)url{
+
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside processOpenUrl QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ" message:url.absoluteString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alert show];
+    
+//    self.savedURL = url;
+/*
+    NSString *string = url.absoluteString;
+    NSArray *components = [string componentsSeparatedByString:@"//"];
+    string = [components objectAtIndex:1];
+    NSString *quotation = @"\"";
+    NSString *script = @"updateContent(";
+    script = [script stringByAppendingString:quotation];
+    script = [script stringByAppendingString:string];
+    NSString *end = @");";
+    script = [script stringByAppendingString:quotation];
+    script = [script stringByAppendingString:end];
+    CDVCommandDelegateImpl *delegate = [[CDVCommandDelegateImpl alloc] initWithViewController:self];
+    [_commandDelegate evalJs:(script)];
+    */
+    NSTimer *retryTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(tryEvaljsAgain:) userInfo:url repeats:NO];
+ //   [self.webView stringByEvaluatingJavaScriptFromString:script];
+    
+    
+//    [self processOpenUrl:url pageLoaded:NO];
 }
 
+- (void)tryEvaljsAgain:(NSTimer *)timer{
+//    url.absoluteString
+    NSURL* url = [timer userInfo];
+    
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside tryEvaljsAgain IIIIIIIIIIIIIIIIIIIIIIIII" message:url.absoluteString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alert show];
+    
+//    self.savedURL = url;
+    
+    NSString *string = url.absoluteString;
+    NSArray *components = [string componentsSeparatedByString:@"//"];
+    string = [components objectAtIndex:1];
+    NSString *quotation = @"\"";
+    NSString *script = @"updateContent(";
+    script = [script stringByAppendingString:quotation];
+    script = [script stringByAppendingString:string];
+    NSString *end = @");";
+    script = [script stringByAppendingString:quotation];
+    script = [script stringByAppendingString:end];
+    CDVCommandDelegateImpl *delegate = [[CDVCommandDelegateImpl alloc] initWithViewController:self];
+    [_commandDelegate evalJs:(script)];
+    
+    
+}
 // ///////////////////////
 
 - (void)dealloc

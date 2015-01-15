@@ -71,13 +71,19 @@
         self.window = [[[UIWindow alloc] initWithFrame:screenBounds] autorelease];
 #endif
     self.window.autoresizesSubviews = YES;
+    if (!self.viewController) {
 
 #if __has_feature(objc_arc)
         self.viewController = [[MainViewController alloc] init];
 #else
         self.viewController = [[[MainViewController alloc] init] autorelease];
 #endif
-
+        
+    }else{
+        [self.viewController processOpenUrl:self.appToAppURL];
+    }
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside didFinishLaunchingWithOptions &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" message:self.appToAppURL.absoluteString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+ //   [alert show];
     // Set your app's start page by setting the <content src='foo.html' /> tag in config.xml.
     // If necessary, uncomment the line below to override it.
     // self.viewController.startPage = @"index.html";
@@ -98,7 +104,17 @@
     if (!url) {
         return NO;
     }
-
+    
+    self.appToAppURL = url;
+    
+    NSString* string;
+    
+    if (self.viewController == nil) {
+        string = @"No view controller";
+    }
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"inside application openURL ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" message:url.absoluteString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alert show];
+    
     [self.viewController processOpenUrl:url];
 
     // all plugins will get the notification, and their handlers will be called

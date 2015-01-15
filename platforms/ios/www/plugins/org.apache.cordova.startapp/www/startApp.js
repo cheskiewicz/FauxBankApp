@@ -32,6 +32,7 @@ module.exports = {
 		exec(completeCallback, errorCallback, "startApp", "check", [message]);
 	},
 	start: function(message, completeCallback, errorCallback) {
+  //             alert("In startapp");
 		exec(completeCallback, errorCallback, "startApp", "start", (typeof message === 'string') ? [message] : message);
 	}	
 }

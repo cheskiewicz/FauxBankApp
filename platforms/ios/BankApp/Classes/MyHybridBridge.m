@@ -20,6 +20,7 @@
 //    dataString = [dataString stringByAppendingString:refreshCode];
     NSString *URLEncodedText = [dataString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *ourPath = [@"goToMovenActual://" stringByAppendingString:URLEncodedText];
+//    NSString *ourPath = [@"goToMoven://" stringByAppendingString:URLEncodedText];
     NSURL *ourURL = [NSURL URLWithString:ourPath];
     if ([ourApplication canOpenURL:ourURL]) {
         [ourApplication openURL:ourURL];
